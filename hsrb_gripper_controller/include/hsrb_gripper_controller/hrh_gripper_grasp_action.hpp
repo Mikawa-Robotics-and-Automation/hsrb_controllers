@@ -52,7 +52,7 @@ class HrhGripperGraspAction : public HrhGripperAction<tmc_control_msgs::action::
 
  protected:
   /// アクションの初期化の実装
-  bool InitImpl(const rclcpp::Node::SharedPtr& node) override;
+  bool InitImpl(const std::shared_ptr<rclcpp_lifecycle::LifecycleNode>& node) override;
   /// アクションの目標を更新する
   void UpdateActionImpl(const tmc_control_msgs::action::GripperApplyEffort::Goal& goal) override;
 

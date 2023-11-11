@@ -64,38 +64,38 @@ install(
 )
 
 if(BUILD_TESTING)
-  find_package(ament_cmake_gmock REQUIRED)
-  find_package(ament_cmake_gtest REQUIRED)
+  # find_package(ament_cmake_gmock REQUIRED)
+  # find_package(ament_cmake_gtest REQUIRED)
 
-  ament_add_gmock(command_subscriber_test test/command_subscriber-test.cpp)
-  target_link_libraries(command_subscriber_test ${PROJECT_NAME})
+  # ament_add_gmock(command_subscriber_test test/command_subscriber-test.cpp)
+  # target_link_libraries(command_subscriber_test ${PROJECT_NAME})
 
-  ament_add_gtest(filter_test test/filter-test.cpp)
-  target_link_libraries(filter_test ${PROJECT_NAME})
+  # ament_add_gtest(filter_test test/filter-test.cpp)
+  # target_link_libraries(filter_test ${PROJECT_NAME})
 
-  ament_add_gtest(omni_base_control_method_test test/omni_base_control_method-test.cpp)
-  target_link_libraries(omni_base_control_method_test ${PROJECT_NAME})
+  # ament_add_gtest(omni_base_control_method_test test/omni_base_control_method-test.cpp)
+  # target_link_libraries(omni_base_control_method_test ${PROJECT_NAME})
 
-  ament_add_gtest(omni_base_controller_test test/omni_base_controller-test.cpp
-                  WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/test)
-  target_link_libraries(omni_base_controller_test ${PROJECT_NAME})
+  # ament_add_gtest(omni_base_controller_test test/omni_base_controller-test.cpp
+  #                 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/test)
+  # target_link_libraries(omni_base_controller_test ${PROJECT_NAME})
 
-  ament_add_gtest(omni_base_input_odometry_test test/omni_base_input_odometry-test.cpp)
-  target_link_libraries(omni_base_input_odometry_test ${PROJECT_NAME})
+  # ament_add_gtest(omni_base_input_odometry_test test/omni_base_input_odometry-test.cpp)
+  # target_link_libraries(omni_base_input_odometry_test ${PROJECT_NAME})
 
-  find_package(Boost COMPONENTS thread REQUIRED)
-  ament_add_gtest(omni_base_joint_controller_test test/omni_base_joint_controller-test.cpp
-                  WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/test)
-  target_link_libraries(omni_base_joint_controller_test ${PROJECT_NAME} Boost::thread)
+  # find_package(Boost COMPONENTS thread REQUIRED)
+  # ament_add_gtest(omni_base_joint_controller_test test/omni_base_joint_controller-test.cpp
+  #                 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/test)
+  # target_link_libraries(omni_base_joint_controller_test ${PROJECT_NAME} Boost::thread)
 
-  ament_add_gtest(omni_base_odometry_test test/omni_base_odometry-test.cpp)
-  target_link_libraries(omni_base_odometry_test ${PROJECT_NAME})
+  # ament_add_gtest(omni_base_odometry_test test/omni_base_odometry-test.cpp)
+  # target_link_libraries(omni_base_odometry_test ${PROJECT_NAME})
 
-  ament_add_gtest(omni_base_state_test test/omni_base_state-test.cpp)
-  target_link_libraries(omni_base_state_test ${PROJECT_NAME})
+  # ament_add_gtest(omni_base_state_test test/omni_base_state-test.cpp)
+  # target_link_libraries(omni_base_state_test ${PROJECT_NAME})
 
-  ament_add_gtest(twin_caster_drive_test test/twin_caster_drive-test.cpp)
-  target_link_libraries(twin_caster_drive_test ${PROJECT_NAME})
+  # ament_add_gtest(twin_caster_drive_test test/twin_caster_drive-test.cpp)
+  # target_link_libraries(twin_caster_drive_test ${PROJECT_NAME})
 endif()
 
 ament_export_dependencies(

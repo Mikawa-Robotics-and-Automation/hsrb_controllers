@@ -42,6 +42,7 @@ DAMAGE.
 #include <control_msgs/action/follow_joint_trajectory.hpp>
 #include <geometry_msgs/msg/twist.hpp>
 #include <rclcpp/rclcpp.hpp>
+#include <rclcpp_lifecycle/lifecycle_node.hpp>
 #include <rclcpp_action/server.hpp>
 #include <realtime_tools/realtime_buffer.h>
 #include <realtime_tools/realtime_server_goal_handle.h>
@@ -55,12 +56,12 @@ namespace hsrb_base_controllers {
 /// 入力指令クラス
 class CommandSubscriber : private boost::noncopyable {
  public:
-  CommandSubscriber(const rclcpp::Node::SharedPtr& node,
+  CommandSubscriber(const std::shared_ptr<rclcpp_lifecycle::LifecycleNode>& node,
                     IControllerCommandInterface* controller);
   virtual ~CommandSubscriber() {}
 
  protected:
-  rclcpp::Node::SharedPtr node_;
+  std::shared_ptr<rclcpp_lifecycle::LifecycleNode> node_;
   IControllerCommandInterface* controller_;
 };
 
@@ -69,7 +70,7 @@ class CommandVelocitySubscriber : public CommandSubscriber {
  public:
   using Ptr = std::shared_ptr<CommandVelocitySubscriber>;
 
-  CommandVelocitySubscriber(const rclcpp::Node::SharedPtr& node,
+  CommandVelocitySubscriber(const std::shared_ptr<rclcpp_lifecycle::LifecycleNode>& node,
                             IControllerCommandInterface* controller);
   virtual ~CommandVelocitySubscriber() {}
 
@@ -86,7 +87,7 @@ class CommandTrajectorySubscriber : public CommandSubscriber {
  public:
   using Ptr = std::shared_ptr<CommandTrajectorySubscriber>;
 
-  CommandTrajectorySubscriber(const rclcpp::Node::SharedPtr& node,
+  CommandTrajectorySubscriber(const std::shared_ptr<rclcpp_lifecycle::LifecycleNode>& node,
                               IControllerCommandInterface* controller);
   virtual ~CommandTrajectorySubscriber() {}
 
@@ -107,7 +108,7 @@ class TrajectoryActionServer : public CommandSubscriber {
  public:
   using Ptr = std::shared_ptr<TrajectoryActionServer>;
 
-  TrajectoryActionServer(const rclcpp::Node::SharedPtr& node,
+  TrajectoryActionServer(const std::shared_ptr<rclcpp_lifecycle::LifecycleNode>& node,
                          const std::vector<std::string>& cordinates,
                          IControllerCommandInterface* controller);
   virtual ~TrajectoryActionServer() {}

@@ -39,6 +39,7 @@ DAMAGE.
 
 #include <control_msgs/msg/joint_trajectory_controller_state.hpp>
 #include <rclcpp/rclcpp.hpp>
+#include <rclcpp_lifecycle/lifecycle_node.hpp>
 #include <realtime_tools/realtime_publisher.h>
 
 #include <hsrb_base_controllers/twin_caster_drive.hpp>
@@ -92,7 +93,7 @@ class StatePublisher {
  public:
   using Ptr = std::shared_ptr<StatePublisher>;
 
-  StatePublisher(const rclcpp::Node::SharedPtr& node,
+  StatePublisher(const std::shared_ptr<rclcpp_lifecycle::LifecycleNode>& node,
                  const std::string& topic_name,
                  const std::vector<std::string>& joint_names);
 
@@ -103,7 +104,7 @@ class StatePublisher {
   }
 
  private:
-  rclcpp::Node::SharedPtr node_;
+  std::shared_ptr<rclcpp_lifecycle::LifecycleNode> node_;
   std::vector<std::string> joint_names_;
   rclcpp::Duration state_publish_period_;
 

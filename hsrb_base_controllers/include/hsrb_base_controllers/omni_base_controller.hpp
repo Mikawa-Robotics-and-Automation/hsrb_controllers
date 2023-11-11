@@ -54,15 +54,26 @@ class OmniBaseController
   ~OmniBaseController() = default;
 
   // コントローラ初期化
-  controller_interface::return_type init(const std::string& controller_name) override;
+  // controller_interface::return_type init(const std::string& controller_name) override;
+  controller_interface::return_type init(
+    const std::string & controller_name, const std::string & namespace_ = "",
+    const rclcpp::NodeOptions & node_options =
+      rclcpp::NodeOptions()
+        .allow_undeclared_parameters(true)
+        .automatically_declare_parameters_from_overrides(true)) override;
 
   // ros2_controlのインターフェース設定
   controller_interface::InterfaceConfiguration command_interface_configuration() const override;
   controller_interface::InterfaceConfiguration state_interface_configuration() const override;
 
   // 台車ジョイント角速度を計算し更新
-  controller_interface::return_type update() override;
+  // controller_interface::return_type update() override;
+  controller_interface::return_type update(const rclcpp::Time & time, const rclcpp::Duration & period) override;
 
+  rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn on_init()
+  {
+    return rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn::SUCCESS;
+  }
   // configure時に呼ばれる関数
   rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn
   on_configure(const rclcpp_lifecycle::State& previous_state) override;

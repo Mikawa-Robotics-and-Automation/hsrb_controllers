@@ -71,7 +71,7 @@ std::vector<uint32_t> MakePermutationVector(
 
 namespace hsrb_base_controllers {
 
-OmniBaseVelocityControl::OmniBaseVelocityControl(const rclcpp::Node::SharedPtr& node)
+OmniBaseVelocityControl::OmniBaseVelocityControl(const std::shared_ptr<rclcpp_lifecycle::LifecycleNode>& node)
     : node_(node) {
   // 速度指令値途絶判定時間を取得
   command_timeout_ = GetParameter(node, "command_timeout", kDefaultCommandTimeout);
@@ -114,7 +114,7 @@ void OmniBaseVelocityControl::UpdateCommandVelocity(const geometry_msgs::msg::Tw
 
 // コンストラクタ，パラメータの初期化を行う
 OmniBaseTrajectoryControl::OmniBaseTrajectoryControl(
-    const rclcpp::Node::SharedPtr& node,
+    const std::shared_ptr<rclcpp_lifecycle::LifecycleNode>& node,
     const std::vector<std::string>& cordinates) : node_(node), coordinate_names_(cordinates) {
   stop_velocity_threshold_ = GetPositiveParameter(node, "stop_velocity_threshold", kStopVelocityThreshold);
   feedback_gain_(kIndexBaseX) = GetPositiveParameter(node, "odom_x.p_gain", kDefaultPGain);
@@ -183,7 +183,8 @@ bool OmniBaseTrajectoryControl::SampleDesiredState(
   }
   std::vector<trajectory_msgs::msg::JointTrajectoryPoint>::const_iterator start_segment_it;
   std::vector<trajectory_msgs::msg::JointTrajectoryPoint>::const_iterator end_segment_it;
-  const bool is_ok = (*trajectory_active_ptr_)->sample(time, desired_state, start_segment_it, end_segment_it);
+  auto interpolation_method = joint_trajectory_controller::interpolation_methods::InterpolationMethod::VARIABLE_DEGREE_SPLINE;
+  const bool is_ok = (*trajectory_active_ptr_)->sample(time, interpolation_method, desired_state, start_segment_it, end_segment_it);
   if (is_ok) {
     before_last_point = end_segment_it != (*trajectory_active_ptr_)->end();
     const rclcpp::Time start_stamp = (*trajectory_active_ptr_)->get_trajectory_start_time();

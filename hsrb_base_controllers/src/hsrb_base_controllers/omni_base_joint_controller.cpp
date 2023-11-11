@@ -61,7 +61,7 @@ const char* const kDefaultRobotModelNode = "robot_state_publisher";
 
 // 関節名の取得，取得できない場合はエラー
 bool GetJointName(
-    const rclcpp::Node::SharedPtr& node, const std::string& parameter_name, std::string& joint_name_out) {
+    const std::shared_ptr<rclcpp_lifecycle::LifecycleNode>& node, const std::string& parameter_name, std::string& joint_name_out) {
   joint_name_out = hsrb_base_controllers::GetParameter(node, parameter_name, "");
   if (joint_name_out.empty()) {
     RCLCPP_ERROR_STREAM(node->get_logger(), "Could not find " << parameter_name);
@@ -72,7 +72,7 @@ bool GetJointName(
 }
 
 // URDFを読み込む
-std::string GetRobotDescription(const rclcpp::Node::SharedPtr& node) {
+std::string GetRobotDescription(const std::shared_ptr<rclcpp_lifecycle::LifecycleNode>& node) {
   // まずは自身のノードから読み込めるかを試す，ダメならmodel_node_nameからの読み込みを試す
   // gazeboの場合，controller_managerにrobot_descriptionをおけないので別ノードから読み込むしかない
   const std::string model_name = hsrb_base_controllers::GetParameter(node, "model_name", kDefaultRobotModelName);
@@ -129,7 +129,7 @@ bool InitializeOmniBaseSize(const rclcpp::Logger& logger,
 namespace hsrb_base_controllers {
 
 // コンストラクタ，パラメータの初期化を行う
-OmniBaseJointController::OmniBaseJointController(const rclcpp::Node::SharedPtr& node)
+OmniBaseJointController::OmniBaseJointController(const std::shared_ptr<rclcpp_lifecycle::LifecycleNode>& node)
     : node_(node),
       joint_command_(Eigen::Vector3d::Zero()),
       desired_steer_pos_(0.0) {

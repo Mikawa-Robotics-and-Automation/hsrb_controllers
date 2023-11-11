@@ -45,13 +45,15 @@ class OmniBaseVelocityControlTest : public ::testing::Test {
  protected:
   void SetUp() override;
 
-  rclcpp::Node::SharedPtr node_;
+  // node_ = rclcpp::Node::make_shared("test_node");
+  node_ = rclcpp_lifecycle::LifecycleNode::make_shared("test_node");
   OmniBaseVelocityControl::Ptr control_;
   geometry_msgs::msg::Twist::SharedPtr input_;
 };
 
 void OmniBaseVelocityControlTest::SetUp() {
-  node_ = rclcpp::Node::make_shared("test_node");
+  // node_ = rclcpp::Node::make_shared("test_node");
+  node_ = rclcpp_lifecycle::LifecycleNode::make_shared("test_node");
   node_->declare_parameter("command_timeout", 0.1);
   control_ = std::make_shared<OmniBaseVelocityControl>(node_);
 
@@ -98,13 +100,15 @@ class OmniBaseTrajectoryControlTest : public ::testing::Test {
  protected:
   void SetUp() override;
 
-  rclcpp::Node::SharedPtr node_;
+  // node_ = rclcpp::Node::make_shared("test_node");
+  node_ = rclcpp_lifecycle::LifecycleNode::make_shared("test_node");
   OmniBaseTrajectoryControl::Ptr control_;
   trajectory_msgs::msg::JointTrajectory::SharedPtr input_trajectory_;
 };
 
 void OmniBaseTrajectoryControlTest::SetUp() {
-  node_ = rclcpp::Node::make_shared("test_node");
+  // node_ = rclcpp::Node::make_shared("test_node");
+  node_ = rclcpp_lifecycle::LifecycleNode::make_shared("test_node");
   std::vector<std::string> base_coordinates = {"odom_x", "odom_y", "odom_t"};
   control_ = std::make_shared<OmniBaseTrajectoryControl>(node_, base_coordinates);
   control_->Activate();

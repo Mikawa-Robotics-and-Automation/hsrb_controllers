@@ -299,7 +299,8 @@ TEST(ConvertTest, JointTrajectoryPoint) {
 
 // StatePublisherで正しく発行される
 TEST(StatePublisherTest, Publish) {
-  auto node = rclcpp::Node::make_shared("test_node");
+  // auto node = rclcpp::Node::make_shared("test_node");
+  auto node = rclcpp_lifecycle::LifecycleNode::make_shared("test_node");
   node->declare_parameter("state_publish_rate", 2.0);
 
   auto pub = std::make_shared<StatePublisher>(

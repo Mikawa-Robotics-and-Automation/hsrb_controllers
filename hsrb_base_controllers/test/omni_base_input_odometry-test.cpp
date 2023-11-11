@@ -40,7 +40,10 @@ namespace hsrb_base_controllers {
 
 /// オドメトリを初期化すること
 TEST(OmniBaseInputOdometryTest, InitOdometry) {
-  auto node = rclcpp::Node::make_shared("test_node");
+  // // // auto node = rclcpp::Node::make_shared("test_node");
+  auto node = rclcpp_lifecycle::LifecycleNode::make_shared("test_node");
+  // auto node = rclcpp_lifecycle::LifecycleNode::make_shared("test_node");
+  // auto node = rclcpp_lifecycle::LifecycleNode::make_shared("test_node");
   auto odom = InputOdometry(node);
 
   odom.InitOdometry();
@@ -58,7 +61,8 @@ TEST(OmniBaseInputOdometryTest, InitOdometry) {
 
 /// 現在のオドメトリを取得すること
 TEST(OmniBaseInputOdometryTest, GetOdometry) {
-  auto node = rclcpp::Node::make_shared("test_node");
+  // // auto node = rclcpp::Node::make_shared("test_node");
+  auto node = rclcpp_lifecycle::LifecycleNode::make_shared("test_node");
   auto odom = InputOdometry(node);
   auto publisher = node->create_publisher<nav_msgs::msg::Odometry>(
       "odom", rclcpp::SystemDefaultsQoS());

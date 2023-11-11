@@ -35,7 +35,7 @@ DAMAGE.
 
 #include <gtest/gtest.h>
 
-#include <controller_interface/controller_state_names.hpp>
+// #include <controller_interface/controller_state_names.hpp>
 #include <rclcpp_action/rclcpp_action.hpp>
 
 #include <hsrb_base_controllers/omni_base_controller.hpp>
@@ -104,8 +104,12 @@ class OmniBaseControllerTest : public ::testing::Test {
 
  protected:
   TestableOmniBaseController::Ptr controller_;
-  rclcpp::Node::SharedPtr controller_node_;
-  rclcpp::Node::SharedPtr client_node_;
+  // rclcpp::Node::SharedPtr controller_node_;
+  // rclcpp::Node::SharedPtr client_node_;
+
+  std::shared_ptr<rclcpp_lifecycle::LifecycleNode> controller_node_;
+  std::shared_ptr<rclcpp_lifecycle::LifecycleNode> client_node_;
+  
   HardwareStub::Ptr hardware_;
   TopicRelay<nav_msgs::msg::Odometry>::Ptr odom_relay_;
   SubscriptionCounter<control_msgs::msg::JointTrajectoryControllerState>::Ptr state_counter_;
@@ -144,7 +148,9 @@ void OmniBaseControllerTest::SetUp() {
   EXPECT_EQ(controller_->configure().label(), controller_interface::state_names::INACTIVE);
   EXPECT_EQ(controller_->activate().label(), controller_interface::state_names::ACTIVE);
 
-  client_node_ = rclcpp::Node::make_shared(kClientNodeName);
+  // client_node_ = rclcpp::Node::make_shared(kClientNodeName);
+  client_node_ = rclcpp_lifecycle::LifecycleNode::make_shared(kClientNodeName);
+  
   odom_relay_ = std::make_shared<TopicRelay<nav_msgs::msg::Odometry>>(
       client_node_, std::string(kControllerNodeName) + "/wheel_odom", "odom");
   state_counter_ = std::make_shared<SubscriptionCounter<control_msgs::msg::JointTrajectoryControllerState>>(

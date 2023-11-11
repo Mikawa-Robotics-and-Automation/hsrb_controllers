@@ -47,4 +47,16 @@ double GetPositiveParameter(
   }
 }
 
+double GetPositiveParameter(
+    const std::shared_ptr<rclcpp_lifecycle::LifecycleNode>& node, const std::string& parameter_name, double default_value) {
+  auto value = GetParameter(node, parameter_name, default_value);
+  if (value > 0.0) {
+    return value;
+  } else {
+    RCLCPP_WARN_STREAM(node->get_logger(),
+                       parameter_name << " must be positive. Use default value " << default_value);
+    return default_value;
+  }
+}
+
 }  // namespace hsrb_base_controllers

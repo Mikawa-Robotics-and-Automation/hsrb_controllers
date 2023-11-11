@@ -77,7 +77,7 @@ void HrhGripperGraspAction::Update(const rclcpp::Time& time) {
 }
 
 /// アクションの初期化の実装
-bool HrhGripperGraspAction::InitImpl(const rclcpp::Node::SharedPtr& node) {
+bool HrhGripperGraspAction::InitImpl(const std::shared_ptr<rclcpp_lifecycle::LifecycleNode>& node) {
   goal_tolerance_ = GetPositiveParameter(node, "torque_goal_tolerance", kDefaultTorqueGoalTolerance);
   return true;
 }

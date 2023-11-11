@@ -44,6 +44,7 @@ DAMAGE.
 #include <geometry_msgs/msg/twist.hpp>
 #include <joint_trajectory_controller/trajectory.hpp>
 #include <rclcpp/rclcpp.hpp>
+#include <rclcpp_lifecycle/lifecycle_node.hpp>
 #include <realtime_tools/realtime_buffer.h>
 
 #include <hsrb_base_controllers/omni_base_state.hpp>
@@ -67,7 +68,7 @@ class OmniBaseVelocityControl : public IBaseControlMethod {
  public:
   using Ptr = std::shared_ptr<OmniBaseVelocityControl>;
 
-  explicit OmniBaseVelocityControl(const rclcpp::Node::SharedPtr& node);
+  explicit OmniBaseVelocityControl(const std::shared_ptr<rclcpp_lifecycle::LifecycleNode>& node);
   virtual ~OmniBaseVelocityControl() = default;
   // 初期化する
   void Activate() override;
@@ -78,7 +79,7 @@ class OmniBaseVelocityControl : public IBaseControlMethod {
   void UpdateCommandVelocity(const geometry_msgs::msg::Twist::SharedPtr& msg);
 
  private:
-  rclcpp::Node::SharedPtr node_;
+  std::shared_ptr<rclcpp_lifecycle::LifecycleNode> node_;
 
   // 排他制御
   std::mutex command_mutex_;
@@ -96,7 +97,7 @@ class OmniBaseTrajectoryControl : public IBaseControlMethod {
  public:
   using Ptr = std::shared_ptr<OmniBaseTrajectoryControl>;
 
-  explicit OmniBaseTrajectoryControl(const rclcpp::Node::SharedPtr& node, const std::vector<std::string>& cordinates);
+  explicit OmniBaseTrajectoryControl(const std::shared_ptr<rclcpp_lifecycle::LifecycleNode>& node, const std::vector<std::string>& cordinates);
   virtual ~OmniBaseTrajectoryControl() = default;
   // 初期化する
   void Activate() override;
@@ -123,7 +124,7 @@ class OmniBaseTrajectoryControl : public IBaseControlMethod {
   void ResetCurrentTrajectory();
 
  private:
-  rclcpp::Node::SharedPtr node_;
+  std::shared_ptr<rclcpp_lifecycle::LifecycleNode> node_;
 
   // 制御のフィードバックゲイン
   Eigen::Vector3d feedback_gain_;

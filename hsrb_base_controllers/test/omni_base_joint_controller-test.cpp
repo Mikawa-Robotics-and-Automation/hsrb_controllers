@@ -62,14 +62,16 @@ class OmniBaseJointControllerTest : public ::testing::Test {
   void SetUp() override;
 
  protected:
-  rclcpp::Node::SharedPtr node_;
+  // node_ = rclcpp::Node::make_shared("test_node");
+  node_ = rclcpp_lifecycle::LifecycleNode::make_shared("test_node");
   rclcpp::Node::SharedPtr urdf_node_;
   OmniBaseJointController::Ptr controller_;
   HardwareStub hardware_;
 };
 
 void OmniBaseJointControllerTest::SetUp() {
-  node_ = rclcpp::Node::make_shared("test_node");
+  // node_ = rclcpp::Node::make_shared("test_node");
+  node_ = rclcpp_lifecycle::LifecycleNode::make_shared("test_node");
   controller_ = std::make_shared<OmniBaseJointController>(node_);
 
   node_->declare_parameter("joints.steer", "base_roll_joint");

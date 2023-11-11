@@ -33,12 +33,16 @@ DAMAGE.
 #include <hsrb_base_controllers/omni_base_controller.hpp>
 
 #include <pluginlib/class_list_macros.hpp>
+#include <lifecycle_msgs/msg/state.hpp>
 
 #include "utils.hpp"
 
 namespace hsrb_base_controllers {
 
-controller_interface::return_type OmniBaseController::init(const std::string& controller_name) {
+// controller_interface::return_type OmniBaseController::init(const std::string& controller_name) {
+controller_interface::return_type OmniBaseController::init(const std::string& controller_name, const std::string & namespace_, const rclcpp::NodeOptions & node_options) {
+  (void) namespace_;
+  (void) node_options;
   const auto ret = ControllerInterface::init(controller_name);
   if (ret != controller_interface::return_type::OK) {
     return ret;
@@ -58,7 +62,12 @@ bool OmniBaseController::InitImpl() {
     RCLCPP_ERROR(get_node()->get_logger(), "The size of joints must be three.");
     return false;
   }
-  default_tolerances_ = joint_trajectory_controller::get_segment_tolerances(*get_node(), base_coordinate_names);
+
+  // default_tolerances_ = joint_trajectory_controller::get_segment_tolerances(*get_node(), base_coordinate_names);
+  auto param_listener_ = std::make_shared<joint_trajectory_controller::ParamListener>(
+      get_node()->get_node_parameters_interface()); // 初期化
+  auto params_ = param_listener_->get_params(); // パラメータの取得
+  default_tolerances_ = joint_trajectory_controller::get_segment_tolerances(params_);
 
   // 速度のサブスクライバをセット
   velocity_subscriber_ = std::make_shared<CommandVelocitySubscriber>(get_node(), this);
@@ -106,8 +115,9 @@ controller_interface::InterfaceConfiguration OmniBaseController::state_interface
   return conf;
 }
 
-controller_interface::return_type OmniBaseController::update() {
-  if (get_current_state().id() == lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE) {
+// controller_interface::return_type OmniBaseController::update() {
+controller_interface::return_type OmniBaseController::update(const rclcpp::Time & /* time */, const rclcpp::Duration & /* period */) {
+  if (get_state().id() == lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE) {
     return controller_interface::return_type::OK;
   }
 
@@ -213,7 +223,7 @@ OmniBaseController::on_deactivate(const rclcpp_lifecycle::State& previous_state)
 }
 
 bool OmniBaseController::IsAcceptable() {
-  return get_current_state().id() != lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE;
+  return get_state().id() != lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE;
 }
 
 void OmniBaseController::UpdateVelocity(const geometry_msgs::msg::Twist::SharedPtr& msg) {

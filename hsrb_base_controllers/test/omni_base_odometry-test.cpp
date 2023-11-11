@@ -51,7 +51,8 @@ class BaseOdometryTest : public ::testing::Test {
 };
 
 void BaseOdometryTest::SetUp() {
-  auto node = rclcpp::Node::make_shared("test_node");
+  // auto node = rclcpp::Node::make_shared("test_node");
+  auto node = rclcpp_lifecycle::LifecycleNode::make_shared("test_node");
   auto publisher = node->create_publisher<nav_msgs::msg::Odometry>(
       "odom", rclcpp::SystemDefaultsQoS());
 
@@ -117,7 +118,8 @@ class WheelOdometryTest : public ::testing::Test {
   void SetUp() override;
 
  protected:
-  rclcpp::Node::SharedPtr node_;
+  // node_ = rclcpp::Node::make_shared("test_node");
+  node_ = rclcpp_lifecycle::LifecycleNode::make_shared("test_node");
   WheelOdometry::Ptr odom_;
 };
 
@@ -127,7 +129,8 @@ void WheelOdometryTest::SetUp() {
   omnibase_size.caster_offset = 0.110000;
   omnibase_size.wheel_radius = 0.040000;
 
-  node_ = rclcpp::Node::make_shared("test_node");
+  // node_ = rclcpp::Node::make_shared("test_node");
+  node_ = rclcpp_lifecycle::LifecycleNode::make_shared("test_node");
   node_->declare_parameter("odometry_publish_rate", 2.0);
   node_->declare_parameter("transform_publish_rate", 4.0);
 
