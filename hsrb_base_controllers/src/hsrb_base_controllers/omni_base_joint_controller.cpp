@@ -195,14 +195,18 @@ std::vector<std::string> OmniBaseJointController::state_interface_names() const 
 /// インターフェース設定
 bool OmniBaseJointController::Activate(std::vector<hardware_interface::LoanedCommandInterface>& command_interfaces,
                                        std::vector<hardware_interface::LoanedStateInterface>& state_interfaces) {
+  const std::string pos_suffix = std::string("/") + std::string(hardware_interface::HW_IF_POSITION);
+  const std::string vel_suffix = std::string("/") + std::string(hardware_interface::HW_IF_VELOCITY);
+  
   for (const auto& name : joint_names_) {
     for (auto& interface : command_interfaces) {
-      if (interface.get_name() == name) {
+      RCLCPP_ERROR_STREAM(node_->get_logger(), name+pos_suffix);
+      if (interface.get_name() == name+pos_suffix || interface.get_name() == name+vel_suffix) {
         command_interfaces_.emplace_back(std::ref(interface));
       }
     }
     for (auto& interface : state_interfaces) {
-      if (interface.get_name() == name) {
+      if (interface.get_name() == name+pos_suffix || interface.get_name() == name+vel_suffix) {
         if (interface.get_interface_name() == hardware_interface::HW_IF_POSITION) {
           current_position_interfaces_.emplace_back(std::ref(interface));
         } else if (interface.get_interface_name() == hardware_interface::HW_IF_VELOCITY) {
