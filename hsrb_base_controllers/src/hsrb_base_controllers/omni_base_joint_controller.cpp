@@ -200,7 +200,6 @@ bool OmniBaseJointController::Activate(std::vector<hardware_interface::LoanedCom
   
   for (const auto& name : joint_names_) {
     for (auto& interface : command_interfaces) {
-      RCLCPP_ERROR_STREAM(node_->get_logger(), name+pos_suffix);
       if (interface.get_name() == name+pos_suffix || interface.get_name() == name+vel_suffix) {
         command_interfaces_.emplace_back(std::ref(interface));
       }
